@@ -1,0 +1,44 @@
+<div class="bg-white rounded-lg shadow-md p-6">
+  <!-- Header -->
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">
+    Kontostand: {{ selectedRepo() === 'Alle' ? 'Alle Konten' : selectedRepo() }}
+  </h2>
+
+  <!-- Balance Cards Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+    <!-- Initial Balance Card -->
+    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+      <p class="text-sm text-gray-600 mb-1 font-medium">Anfangssaldo</p>
+      <p class="text-2xl font-bold text-gray-800">{{ initialBalance.toFixed(2) }} €</p>
+    </div>
+
+    <!-- Current Balance Card -->
+    <div class="bg-orange-50 p-4 rounded-lg border-2 border-orange-300">
+      <p class="text-sm text-orange-700 mb-1 font-medium">Aktueller Saldo</p>
+      <p class="text-2xl font-bold text-orange-900">{{ currentBalance().toFixed(2) }} €</p>
+    </div>
+
+    <!-- Balance Change Card -->
+    <div [class]="balanceChange() >= 0 ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300'" class="p-4 rounded-lg border-2">
+      <p class="text-sm mb-1 font-medium" [class.text-green-700]="balanceChange() >= 0" [class.text-red-700]="balanceChange() < 0">
+        Veränderung
+      </p>
+      <p class="text-2xl font-bold" [class.text-green-900]="balanceChange() >= 0" [class.text-red-900]="balanceChange() < 0">
+        {{ balanceChange() >= 0 ? '+' : '' }}{{ balanceChange().toFixed(2) }} €
+      </p>
+      <p class="text-xs mt-1" [class.text-green-600]="balanceChange() >= 0" [class.text-red-600]="balanceChange() < 0">
+        {{ balanceChange() >= 0 ? '+' : '' }}{{ balanceChangePercent() }}%
+      </p>
+    </div>
+  </div>
+
+  <!-- Graph Section -->
+  <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Saldoverlauf</h3>
+
+    <!-- Chart.js Canvas -->
+    <div class="relative h-64 bg-white border border-gray-200 p-4">
+      <canvas #balanceChart></canvas>
+    </div>
+  </div>
+</div>
