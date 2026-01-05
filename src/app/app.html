@@ -8,7 +8,12 @@
   <div class="flex flex-col h-screen bg-gray-50">
     <!-- Header -->
     <header class="flex justify-between items-center px-8 py-8  bg-orange-300 text-gray-800 shadow-lg">
-      <h1 class="text-2xl font-bold">Mein Haushaltsbuch</h1>
+      <div class="flex items-center gap-4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="white">
+          <path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+        </svg>
+        <h1 class="text-2xl font-bold">Mein Haushaltsbuch</h1>
+      </div>
       <button
         (click)="onLogout()"
         class="p-2 bg-orange-300 hover:bg-orange-400 transition rounded-lg"
