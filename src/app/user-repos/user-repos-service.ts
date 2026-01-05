@@ -5,9 +5,9 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root'
 })
 export class UserRepoService {
-  private userRepos = signal<string[]>(['all', 'Checking Account', 'Savings Account', 'Cash']);
+  private userRepos = signal<string[]>(['Alle', 'Girokonto', 'Sparkonto', 'Bargeld']);
 
-  selectedRepo = signal<string>('all');
+  selectedRepo = signal<string>('Alle');
   allRepos = this.userRepos.asReadonly();
 
   addRepo(repo: string): void {
