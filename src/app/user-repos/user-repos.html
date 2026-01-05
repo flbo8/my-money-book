@@ -1,0 +1,13 @@
+<h2 class="text-lg font-semibold text-orange-800 mb-4 pb-2 border-b-2 border-orange-200">Repositories</h2>
+<nav class="flex flex-col gap-2">
+    @for (repo of allRepos(); track repo) {
+    <button
+        (click)="selectRepo(repo)"
+        [class]="selRepo() === repo
+            ? 'bg-orange-100 text-orange-900 border-l-4 border-l-orange-400 px-4 py-2.5 border-y border-r border-gray-200 cursor-pointer transition-all text-left font-medium'
+            : 'text-gray-700 border-l-4 border-l-transparent hover:border-l-orange-200 hover:bg-gray-50 px-4 py-2.5 border-y border-r border-transparent cursor-pointer transition-all text-left font-medium'"
+    >
+        {{ repo === 'all' ? 'Alle ' : repo }}
+    </button>
+    }
+</nav>
