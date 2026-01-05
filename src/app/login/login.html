@@ -1,0 +1,50 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-50">
+    <div class="bg-white p-10 rounded-xl shadow-xl w-full max-w-md">
+      <h1 class="text-3xl font-bold text-gray-800 text-center mb-2">Mein Haushaltsbuch</h1>
+      <p class="text-center text-gray-600 mb-8">Logge dich ein, um deine Finanzen zu verwalten</p>
+
+      <form (ngSubmit)="onLogin()" class="flex flex-col gap-5">
+        <div class="flex flex-col gap-2">
+          <label for="username" class="text-sm font-medium text-gray-700">Nutzername</label>
+          <input
+            type="text"
+            id="username"
+            [(ngModel)]="username"
+            name="username"
+            placeholder="Enter your username"
+            required
+            [disabled]="isLoggingIn()"
+            class="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition"
+          />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="password" class="text-sm font-medium text-gray-700">Passwort</label>
+          <input
+            type="password"
+            id="password"
+            [(ngModel)]="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+            [disabled]="isLoggingIn()"
+            class="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition"
+          />
+        </div>
+
+        @if (loginError()) {
+          <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded">
+            {{ loginError() }}
+          </div>
+        }
+
+        <button
+          type="submit"
+          [disabled]="isLoggingIn()"
+          class="py-3 bg-linear-to-r from-purple-600 to-indigo-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all transform hover:-translate-y-0.5 hover:shadow-lg"
+        >
+          {{ isLoggingIn() ? 'Signing in...' : 'Sign In' }}
+        </button>
+      </form>
+    </div>
+</div>

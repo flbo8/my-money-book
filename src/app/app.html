@@ -1,3 +1,87 @@
-<main>
-  <app-lexik-auth-test />
-</main>
+<!-- Login Screen -->
+@if (!isAuthenticated()) {
+  <app-login />
+}
+
+<!-- Main Application -->
+@if (isAuthenticated()) {
+  <div class="flex flex-col h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="flex justify-between items-center px-8 py-4 bg-linear-to-r from-purple-600 to-indigo-600 text-white shadow-lg">
+      <h1 class="text-2xl font-bold">Mein Haushaltsbuch</h1>
+      <button
+        (click)="onLogout()"
+        class="px-6 py-2 bg-white/20 border border-white/30 rounded-lg font-medium hover:bg-white/30 transition"
+      >
+        Logout
+      </button>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+      <!-- Sidebar with Repos -->
+      <aside class="w-72 bg-white p-6 shadow-lg overflow-y-auto">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Repositories</h2>
+          <nav class="flex flex-col gap-2">
+              @for (repo of repos; track repo) {
+              <button
+                  (click)="selectRepo(repo)"
+                  [class.bg-linear-to-r]="selectedRepo === repo"
+                  [class.from-purple-600]="selectedRepo === repo"
+                  [class.to-indigo-600]="selectedRepo === repo"
+                  [class.text-white]="selectedRepo === repo"
+                  [class.border-purple-600]="selectedRepo === repo"
+                  [class.bg-gray-50]="selectedRepo !== repo"
+                  [class.text-gray-700]="selectedRepo !== repo"
+                  [class.border-gray-200]="selectedRepo !== repo"
+                  [class.hover:bg-gray-100]="selectedRepo !== repo"
+                  [class.hover:border-gray-300]="selectedRepo !== repo"
+                  class="px-4 py-3.5 border rounded-lg cursor-pointer transition-all text-left font-medium"
+              >
+                  {{ repo === 'all' ? 'All Repos' : repo }}
+              </button>
+              }
+          </nav>
+      </aside>
+
+      <!-- Main Content with Transfers -->
+      <main class="flex-1 p-8 overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-3xl font-bold text-gray-800">Transfers</h2>
+          <p class="text-gray-600">{{ filteredTransfers.length }} transfer(s)</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+          @for (transfer of filteredTransfers; track transfer.id) {
+            <div class="bg-white p-5 rounded-lg shadow-md hover:shadow-xl transition-shadow border-l-4 border-purple-500">
+              <div class="flex justify-between items-center mb-3">
+                <span class="text-sm text-gray-500 font-medium">{{ transfer.date }}</span>
+                <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
+                  {{ transfer.category }}
+                </span>
+              </div>
+              <div class="text-lg font-semibold text-gray-900 mb-3">{{ transfer.description }}</div>
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-500">{{ transfer.repo }}</span>
+                <span
+                  [class.text-green-600]="transfer.amount > 0"
+                  [class.text-red-600]="transfer.amount < 0"
+                  class="text-xl font-bold"
+                >
+                  {{ transfer.amount > 0 ? '+' : '' }}{{ transfer.amount.toFixed(2) }} €
+                </span>
+              </div>
+            </div>
+          }
+        </div>
+
+        @if (filteredTransfers.length === 0) {
+          <div class="text-center py-12 bg-white rounded-lg shadow-md">
+            <p class="text-lg text-gray-500">
+              No transfers found for {{ selectedRepo === 'all' ? 'any repository' : selectedRepo }}.
+            </p>
+          </div>
+        }
+      </main>
+    </div>
+  </div>
+}

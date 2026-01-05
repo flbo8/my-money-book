@@ -24,7 +24,7 @@ export class AuthService {
   );
   
   token = this.tokenSignal.asReadonly();
-  isAuthenticated = computed(() => !!this.tokenSignal());
+  isAuthenticated = computed(() => this.tokenSignal() ? true : false);
 
   login(credentials: LoginCredentials): Observable<LoginResponse> {
     return this.authHttpClient.post<LoginResponse>(
