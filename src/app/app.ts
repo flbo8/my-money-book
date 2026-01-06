@@ -7,10 +7,11 @@ import { UserRepos } from "./user-repos/user-repos";
 import { UserRepoService } from './user-repos/user-repos-service';
 import { Balances } from "./balances/balances";
 import { Transfers } from "./transfers/transfers";
+import { Header } from "./header/header";
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, FormsModule, Login, UserRepos, Balances, Transfers],
+  imports: [CommonModule, FormsModule, Login, UserRepos, Balances, Transfers, Header],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -20,9 +21,4 @@ export class App {
 
   isAuthenticated = this.authService.isAuthenticated;
   selRepo = this.repoService.selectedRepo;
-
-  onLogout() {
-    this.authService.logout();
-    this.repoService.selectedRepo.set('all');
-  }
 }
