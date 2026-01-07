@@ -20,5 +20,5 @@ export class App {
   private repoService = inject(UserRepoService);
 
   isAuthenticated = this.authService.isAuthenticated;
-  selRepo = this.repoService.selectedRepo;
+  selRepo = this.repoService.selectedRepoName;
 }

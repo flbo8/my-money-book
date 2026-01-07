@@ -21,7 +21,7 @@ export class Balances implements AfterViewInit, OnDestroy {
 
   private repoService = inject(UserRepoService);
 
-  selectedRepo = this.repoService.selectedRepo;
+  selectedRepo = this.repoService.selectedRepoName;
 
   // Mock data - replace with real data from API
   initialBalance = 1000.00;

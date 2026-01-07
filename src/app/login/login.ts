@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormsModule } from '@angular/forms';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ export class Login {
   isLoggingIn = signal<boolean>(false);
 
   private authService = inject(AuthService);
+  private userService = inject(UserService);
 
   onLogin() {
     this.isLoggingIn.set(true);

@@ -1,36 +1,36 @@
 <div class="flex justify-between items-center mb-6">
     <h2 class="text-2xl font-bold text-gray-800">Transfers</h2>
-    <p class="text-gray-600">{{ filteredTransfers.length }} transfer(s)</p>
+    <p class="text-gray-600">{{ transfers().length }} transfer(s)</p>
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
-    @for (transfer of filteredTransfers; track transfer.id) {
+    @for (transfer of transfers(); track transfer.id) {
     <div class="bg-white p-5 rounded-lg shadow-md hover:shadow-xl transition-shadow">
         <div class="flex justify-between items-center mb-3">
-        <span class="text-sm text-gray-500 font-medium">{{ transfer.date }}</span>
+        <span class="text-sm text-gray-500 font-medium">{{ transfer.transferDate | date: "dd.MM.y HH:mm" : "UTC"}}</span>
         <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
-            {{ transfer.category }}
+            Kategorie
         </span>
         </div>
         <div class="text-lg font-semibold text-gray-900 mb-3">{{ transfer.description }}</div>
         <div class="flex justify-between items-center">
-        <span class="text-sm text-gray-500">{{ transfer.repo }}</span>
+        <span class="text-sm text-gray-500">{{ transfer.repoName }}</span>
         <span
-            [class.text-green-600]="transfer.amount > 0"
-            [class.text-red-600]="transfer.amount < 0"
+            [class.text-green-600]="transfer.transferType === 'income'"
+            [class.text-red-600]="transfer.transferType === 'expense'"
             class="text-xl font-bold"
         >
-            {{ transfer.amount > 0 ? '+' : '' }}{{ transfer.amount.toFixed(2) }} €
+            {{ transfer.transferValue | number:'1.2-2' }} €
         </span>
         </div>
     </div>
     }
 </div>
 
-@if (filteredTransfers.length === 0) {
+@if (transfers().length === 0) {
     <div class="text-center py-12 bg-white rounded-lg shadow-md">
     <p class="text-lg text-gray-500">
-        No transfers found for {{ selRepo() === 'all' ? 'any repository' : selRepo() }}.
+        No transfers found for {{ selRepo() === 'Alle' ? 'any repository' : selRepo() }}.
     </p>
     </div>
 }
