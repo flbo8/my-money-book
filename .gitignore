@@ -41,3 +41,8 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Dummy files for connection building
+src/app/API-ERROR-HANDLING.md
+src/app/example-api.service.ts
+src/app/example-usage.component.ts

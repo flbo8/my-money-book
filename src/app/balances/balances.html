@@ -9,13 +9,13 @@
     <!-- Initial Balance Card -->
     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
       <p class="text-sm text-gray-600 mb-1 font-medium">Anfangssaldo</p>
-      <p class="text-2xl font-bold text-gray-800">{{ initialBalance.toFixed(2) }} €</p>
+      <p class="text-2xl font-bold text-gray-800">{{ balance().initialBalance | number: '1.2-2' }} €</p>
     </div>
 
     <!-- Current Balance Card -->
     <div class="bg-orange-50 p-4 rounded-lg border-2 border-orange-300">
       <p class="text-sm text-orange-700 mb-1 font-medium">Aktueller Saldo</p>
-      <p class="text-2xl font-bold text-orange-900">{{ currentBalance().toFixed(2) }} €</p>
+      <p class="text-2xl font-bold text-orange-900">{{ balance().balance | number: '1.2-2' }} €</p>
     </div>
 
     <!-- Balance Change Card -->

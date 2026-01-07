@@ -4,7 +4,8 @@ import { AuthService } from "./auth.service";
 import { catchError, Observable, throwError, of } from "rxjs";
 import type { UserInfo } from "./user.model";
 import type { MoneyRepo } from "./user-repos/user-repos.model";
-import { Transfer } from "./transfers/transfers.model";
+import type { Transfer } from "./transfers/transfers.model";
+import type { Balance } from "./balances/balances.model";
 
 @Injectable({
   providedIn: 'root'
@@ -135,6 +136,48 @@ export class ApiService {
           console.error('404 Not Found - User repos transfers do not exist');
           // Return empty array on 404
           return of([]);
+        }
+        // For other errors, use standard error handler
+        return this.handleError(error);
+      })
+    );
+  }
+
+  getRepoBalance(repoId: number): Observable<Balance> {
+    return this.httpClient.get<Balance>(`${this.apiUrl}/money-repos/${repoId}/balance`, {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          console.error('404 Not Found - User repos transfers do not exist');
+          // Return empty array on 404
+          return of({
+            totalIncome: 0,
+            totalExpenses: 0,
+            balance: 0,
+            initialBalance: 0
+          });
+        }
+        // For other errors, use standard error handler
+        return this.handleError(error);
+      })
+    );
+  }
+
+  getUserBalance(): Observable<Balance> {
+    return this.httpClient.get<Balance>(`${this.apiUrl}/money-repos/balance`, {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          console.error('404 Not Found - User repos transfers do not exist');
+          // Return empty array on 404
+          return of({
+            totalIncome: 0,
+            totalExpenses: 0,
+            balance: 0,
+            initialBalance: 0
+          });
         }
         // For other errors, use standard error handler
         return this.handleError(error);

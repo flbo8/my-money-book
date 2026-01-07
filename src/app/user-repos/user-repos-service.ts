@@ -4,6 +4,7 @@ import { ApiService } from '../api.service';
 import { AuthService } from '../auth.service';
 import type { MoneyRepo } from './user-repos.model';
 import type { Transfer } from '../transfers/transfers.model';
+import { Balance } from '../balances/balances.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,12 @@ export class UserRepoService {
   selectedRepoName = signal<string>('Alle');
   allRepos = this.userRepos.asReadonly();
   transfers = signal<Transfer[]>([]);
+  balance = signal<Balance>({
+    totalIncome: 0,
+    totalExpenses: 0,
+    balance: 0,
+    initialBalance: 0
+  });
 
   constructor() {
     // Automatically fetch transfers when selectedRepoName changes AND user is authenticated
@@ -30,6 +37,7 @@ export class UserRepoService {
         // Use untracked to prevent other signal reads from triggering this effect
         untracked(() => {
           this.fetchTransfersForSelectedRepo();
+          this.fetchBalanceForSelectedRepo();
         });
       }
     });
@@ -93,6 +101,43 @@ export class UserRepoService {
       } else {
         // No repo found, set empty array
         this.transfers.set([]);
+      }
+    }
+  }
+
+  fetchBalanceForSelectedRepo() {
+    const selectedName = this.selectedRepoName();
+
+    if (selectedName === 'Alle') {
+      const subscription = this.apiService.getUserBalance().subscribe({
+        next: (data) => {
+          this.balance.set(data);
+          console.log(data);
+        },
+        error: (err) => {
+          if (err.status === 401) {
+            console.log('Session expired, redirecting to login...');
+          }
+        }
+      });
+      this.destroyRef.onDestroy(() => subscription.unsubscribe());
+    } else {
+      //Find the repo ID for the selected repo name
+      const selectedRepo = this.userRepos().find(repo => repo.repoName === selectedName);
+
+      if (selectedRepo) {
+        const subscription = this.apiService.getRepoBalance(selectedRepo.id).subscribe({
+          next: (data) => {
+            this.balance.set(data);
+            console.log(data);
+          },
+          error: (err) => {
+            if (err.status === 401) {
+              console.log('Session expired, redirecting to login...');
+            }
+          }
+        });
+        this.destroyRef.onDestroy(() => subscription.unsubscribe());
       }
     }
   }

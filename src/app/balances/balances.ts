@@ -1,6 +1,7 @@
 import { Component, inject, computed, AfterViewInit, OnDestroy, ElementRef, ViewChild, effect, signal } from '@angular/core';
 import { UserRepoService } from '../user-repos/user-repos-service';
 import { Chart, registerables } from 'chart.js';
+import { DecimalPipe } from '@angular/common';
 
 Chart.register(...registerables);
 
@@ -11,7 +12,7 @@ interface BalanceHistory {
 
 @Component({
   selector: 'app-balances',
-  imports: [],
+  imports: [DecimalPipe],
   templateUrl: './balances.html',
   styleUrl: './balances.css',
 })
@@ -22,9 +23,7 @@ export class Balances implements AfterViewInit, OnDestroy {
   private repoService = inject(UserRepoService);
 
   selectedRepo = this.repoService.selectedRepoName;
-
-  // Mock data - replace with real data from API
-  initialBalance = 1000.00;
+  balance = this.repoService.balance;
 
   balanceHistory = signal<BalanceHistory[]>([
     { date: '2025-12-01', balance: 1000.00 },
@@ -37,17 +36,14 @@ export class Balances implements AfterViewInit, OnDestroy {
     { date: '2026-01-05', balance: 2000.00 },
   ]);
 
-  currentBalance = computed(() => {
-    return this.balanceHistory()[this.balanceHistory().length - 1]?.balance || 0;
-  });
-
   balanceChange = computed(() => {
-    return this.currentBalance() - this.initialBalance;
+    return this.balance().balance - this.balance().initialBalance;
   });
 
   balanceChangePercent = computed(() => {
-    if (this.initialBalance === 0) return 0;
-    return ((this.balanceChange() / this.initialBalance) * 100).toFixed(2);
+    if (this.balance().initialBalance === 0) return 100.00;
+    if ((this.balance().initialBalance < 0) && (this.balance().balance > 0)) return (this.balanceChange() / Math.abs(this.balance().initialBalance) * 100).toFixed(2);
+    return ((this.balanceChange() / this.balance().initialBalance) * 100).toFixed(2);
   });
 
   constructor() {
