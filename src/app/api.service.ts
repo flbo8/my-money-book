@@ -184,4 +184,14 @@ export class ApiService {
       })
     );
   }
+
+  createTransfer(repoId: number, transferData: Partial<Transfer>): Observable<Transfer> {
+    return this.httpClient.post<Transfer>(
+      `${this.apiUrl}/money-repos/${repoId}/transfers`,
+      transferData,
+      { headers: this.getAuthHeaders() }
+    ).pipe(
+      catchError(this.handleError.bind(this))
+    );
+  }
 }

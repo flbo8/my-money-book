@@ -73,7 +73,10 @@ export class UserRepoService {
       // Fetch all user transfers
       const subscription = this.apiService.getAllUsersTransfers().subscribe({
         next: (data) => {
-          this.transfers.set(data);
+          const sortedTransfers = data.sort((a, b) =>
+            new Date(b.transferDate).getTime() - new Date(a.transferDate).getTime()
+          );
+          this.transfers.set(sortedTransfers);
         },
         error: (err) => {
           if (err.status === 401) {
@@ -89,7 +92,10 @@ export class UserRepoService {
       if (selectedRepo) {
         const subscription = this.apiService.getReposTransfers(selectedRepo.id).subscribe({
           next: (data) => {
-            this.transfers.set(data);
+            const sortedTransfers = data.sort((a, b) =>
+              new Date(b.transferDate).getTime() - new Date(a.transferDate).getTime()
+            );
+            this.transfers.set(sortedTransfers);
           },
           error: (err) => {
             if (err.status === 401) {
@@ -112,7 +118,6 @@ export class UserRepoService {
       const subscription = this.apiService.getUserBalance().subscribe({
         next: (data) => {
           this.balance.set(data);
-          console.log(data);
         },
         error: (err) => {
           if (err.status === 401) {
@@ -129,7 +134,6 @@ export class UserRepoService {
         const subscription = this.apiService.getRepoBalance(selectedRepo.id).subscribe({
           next: (data) => {
             this.balance.set(data);
-            console.log(data);
           },
           error: (err) => {
             if (err.status === 401) {

@@ -1,4 +1,4 @@
-import { Component, inject, computed, AfterViewInit, OnDestroy, ElementRef, ViewChild, effect, signal } from '@angular/core';
+import { Component, inject, computed, AfterViewInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { UserRepoService } from '../user-repos/user-repos-service';
 import { Chart, registerables } from 'chart.js';
 import { DecimalPipe } from '@angular/common';
@@ -25,7 +25,8 @@ export class Balances implements AfterViewInit, OnDestroy {
   selectedRepo = this.repoService.selectedRepoName;
   balance = this.repoService.balance;
 
-  balanceHistory = signal<BalanceHistory[]>([
+  // Mocked balance history data
+  balanceHistory: BalanceHistory[] = [
     { date: '2025-12-01', balance: 1000.00 },
     { date: '2025-12-05', balance: 950.50 },
     { date: '2025-12-10', balance: 1200.00 },
@@ -34,7 +35,7 @@ export class Balances implements AfterViewInit, OnDestroy {
     { date: '2025-12-25', balance: 1250.00 },
     { date: '2026-01-01', balance: 2050.00 },
     { date: '2026-01-05', balance: 2000.00 },
-  ]);
+  ];
 
   balanceChange = computed(() => {
     return this.balance().balance - this.balance().initialBalance;
@@ -46,25 +47,13 @@ export class Balances implements AfterViewInit, OnDestroy {
     return ((this.balanceChange() / this.balance().initialBalance) * 100).toFixed(2);
   });
 
-  constructor() {
-    // Update chart when selectedRepo changes
-    effect(() => {
-      this.selectedRepo(); // Track dependency
-      if (this.chart) {
-        this.updateChart();
-      }
-    });
-  }
-
   ngAfterViewInit() {
-    // Use setTimeout to ensure the canvas is fully rendered
     setTimeout(() => {
       this.initChart();
     }, 0);
   }
 
   ngOnDestroy() {
-    // Cleanup chart instance on component destruction
     if (this.chart) {
       this.chart.destroy();
       this.chart = undefined;
@@ -72,7 +61,6 @@ export class Balances implements AfterViewInit, OnDestroy {
   }
 
   private initChart() {
-    // Destroy existing chart if it exists
     if (this.chart) {
       this.chart.destroy();
     }
@@ -80,20 +68,26 @@ export class Balances implements AfterViewInit, OnDestroy {
     const ctx = this.chartCanvas.nativeElement.getContext('2d');
     if (!ctx) return;
 
+    const labels = this.balanceHistory.map(item => item.date);
+    const data = this.balanceHistory.map(item => item.balance);
+
     this.chart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: this.balanceHistory().map(item => item.date),
+        labels: labels,
         datasets: [{
           label: 'Saldo',
-          data: this.balanceHistory().map(item => item.balance),
+          data: data,
           borderColor: '#fb923c',
-          backgroundColor: 'transparent',
+          backgroundColor: 'rgba(251, 146, 60, 0.1)',
           borderWidth: 2,
-          pointRadius: 3,
+          pointRadius: 4,
+          pointHoverRadius: 6,
           pointBackgroundColor: '#fb923c',
-          pointBorderColor: '#fb923c',
-          tension: 0.1
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          tension: 0.3,
+          fill: true
         }]
       },
       options: {
@@ -108,7 +102,15 @@ export class Balances implements AfterViewInit, OnDestroy {
             padding: 12,
             displayColors: false,
             callbacks: {
-              label: (context) => `${context.parsed.y?.toFixed(2)} €`
+              title: (items) => {
+                const date = new Date(items[0].label);
+                return date.toLocaleDateString('de-DE', {
+                  day: '2-digit',
+                  month: 'long',
+                  year: 'numeric'
+                });
+              },
+              label: (context) => `Saldo: ${context.parsed.y?.toFixed(2)} €`
             }
           }
         },
@@ -119,27 +121,31 @@ export class Balances implements AfterViewInit, OnDestroy {
             },
             ticks: {
               maxRotation: 0,
-              autoSkipPadding: 20
+              autoSkip: true,
+              maxTicksLimit: 8,
+              callback: function(_value, index) {
+                const date = new Date(labels[index]);
+                return date.toLocaleDateString('de-DE', {
+                  day: '2-digit',
+                  month: 'short'
+                });
+              }
             }
           },
           y: {
             grid: {
-              color: '#e5e7eb'
+              color: 'rgba(0, 0, 0, 0.05)'
             },
             ticks: {
               callback: (value) => `${value} €`
             }
           }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index'
         }
       }
     });
-  }
-
-  private updateChart() {
-    if (this.chart) {
-      this.chart.data.labels = this.balanceHistory().map(item => item.date);
-      this.chart.data.datasets[0].data = this.balanceHistory().map(item => item.balance);
-      this.chart.update();
-    }
   }
 }
