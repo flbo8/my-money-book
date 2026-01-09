@@ -194,4 +194,14 @@ export class ApiService {
       catchError(this.handleError.bind(this))
     );
   }
+
+  createRepo(repoData: Partial<MoneyRepo>): Observable<MoneyRepo> {
+    return this.httpClient.post<MoneyRepo>(
+      `${this.apiUrl}/money-repos`,
+      repoData,
+      { headers: this.getAuthHeaders() }
+    ).pipe(
+      catchError(this.handleError.bind(this))
+    );
+  }
 }

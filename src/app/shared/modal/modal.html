@@ -1,0 +1,27 @@
+@if (isOpen) {
+<div
+    class="fixed inset-0 bg-opacity-30 z-50 flex items-center justify-center p-4"
+    (click)="onBackdropClick($event)"
+>
+    <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center p-6 border-b border-gray-200">
+            <h2 class="text-xl font-semibold text-gray-800">{{ title }}</h2>
+            <button
+                (click)="onClose()"
+                class="text-gray-400 hover:text-gray-600 transition-colors"
+                type="button"
+            >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Modal Content -->
+        <div class="p-6">
+            <ng-content></ng-content>
+        </div>
+    </div>
+</div>
+}

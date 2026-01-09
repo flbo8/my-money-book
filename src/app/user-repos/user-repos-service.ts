@@ -10,14 +10,13 @@ import { Balance } from '../balances/balances.model';
   providedIn: 'root'
 })
 export class UserRepoService {
-  private userRepos = signal<MoneyRepo[]>([]);
   private apiService = inject(ApiService);
   private authService = inject(AuthService);
   private destroyRef = inject(DestroyRef);
 
   // Store selected repo name as string ('Alle' or specific repo name)
   selectedRepoName = signal<string>('Alle');
-  allRepos = this.userRepos.asReadonly();
+  allRepos = signal<MoneyRepo[]>([]);
   transfers = signal<Transfer[]>([]);
   balance = signal<Balance>({
     totalIncome: 0,
@@ -47,7 +46,7 @@ export class UserRepoService {
     const subscription = this.apiService.getUserRepos().subscribe({
       next: (data) => {
         // API now returns MoneyRepo[] directly (empty array on 404)
-        this.userRepos.set(data);
+        this.allRepos.set(data);
       },
       error: (err) => {
         // Handle specific error codes if needed
@@ -87,7 +86,7 @@ export class UserRepoService {
       this.destroyRef.onDestroy(() => subscription.unsubscribe());
     } else {
       // Find the repo ID for the selected repo name
-      const selectedRepo = this.userRepos().find(repo => repo.repoName === selectedName);
+      const selectedRepo = this.allRepos().find(repo => repo.repoName === selectedName);
 
       if (selectedRepo) {
         const subscription = this.apiService.getReposTransfers(selectedRepo.id).subscribe({
@@ -128,7 +127,7 @@ export class UserRepoService {
       this.destroyRef.onDestroy(() => subscription.unsubscribe());
     } else {
       //Find the repo ID for the selected repo name
-      const selectedRepo = this.userRepos().find(repo => repo.repoName === selectedName);
+      const selectedRepo = this.allRepos().find(repo => repo.repoName === selectedName);
 
       if (selectedRepo) {
         const subscription = this.apiService.getRepoBalance(selectedRepo.id).subscribe({
@@ -146,7 +145,4 @@ export class UserRepoService {
     }
   }
 
-  addRepo(repo: MoneyRepo): void {
-    this.userRepos.update((oldRepos) => [...oldRepos, repo]);
-  }
 }
