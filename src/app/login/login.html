@@ -1,7 +1,7 @@
-<div class="flex items-center justify-center min-h-screen bg-gray-50">
+<div class="flex items-center justify-center h-full bg-gray-50">
     <div class="bg-white p-10 rounded-xl shadow-xl w-full max-w-md">
-      <h1 class="text-3xl font-bold text-gray-800 text-center mb-2">Mein Haushaltsbuch</h1>
-      <p class="text-center text-gray-600 mb-8">Logge dich ein, um deine Finanzen zu verwalten</p>
+      <h1 class="text-3xl font-bold text-gray-800 text-center mb-2 cursor-default">Login</h1>
+      <p class="text-center text-gray-600 mb-8 cursor-default">Logge dich ein, um deine Finanzen zu verwalten</p>
 
       <form (ngSubmit)="onLogin()" class="flex flex-col gap-5">
         <div class="flex flex-col gap-2">
@@ -11,10 +11,9 @@
             id="username"
             [(ngModel)]="username"
             name="username"
-            placeholder="Enter your username"
             required
             [disabled]="isLoggingIn()"
-            class="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition"
+            class="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition"
           />
         </div>
 
@@ -25,10 +24,9 @@
             id="password"
             [(ngModel)]="password"
             name="password"
-            placeholder="Enter your password"
             required
             [disabled]="isLoggingIn()"
-            class="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition"
+            class="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition"
           />
         </div>
 
@@ -41,10 +39,20 @@
         <button
           type="submit"
           [disabled]="isLoggingIn()"
-          class="py-3 bg-linear-to-r from-purple-600 to-indigo-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-all transform hover:-translate-y-0.5 hover:shadow-lg"
+          class="py-3 bg-lime-500 text-white font-semibold rounded-lg hover:bg-lime-600 hover:cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed transition-all transform hover:-translate-y-0.5 hover:shadow-lg"
         >
-          {{ isLoggingIn() ? 'Signing in...' : 'Sign In' }}
+          {{ isLoggingIn() ? 'Logge ein...' : 'Einloggen' }}
         </button>
+
+        <div class="text-center mt-4">
+          <button
+            type="button"
+            (click)="onSwitchToRegistration()"
+            class="text-blue-500 hover:text-blue-600 text-sm font-medium cursor-pointer"
+          >
+            Noch kein Konto? Jetzt registrieren
+          </button>
+        </div>
       </form>
     </div>
 </div>

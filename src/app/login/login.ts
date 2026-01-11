@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, output } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../user.service';
@@ -18,6 +18,12 @@ export class Login {
 
   private authService = inject(AuthService);
   private userService = inject(UserService);
+
+  switchToRegistration = output<void>();
+
+  onSwitchToRegistration() {
+    this.switchToRegistration.emit();
+  }
 
   onLogin() {
     this.isLoggingIn.set(true);

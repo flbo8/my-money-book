@@ -6,6 +6,7 @@ import type { UserInfo } from "./user.model";
 import type { MoneyRepo } from "./user-repos/user-repos.model";
 import type { Transfer } from "./transfers/transfers.model";
 import type { Balance } from "./balances/balances.model";
+import type { RegistrationData, RegistrationResponse } from "./registration.model";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ import type { Balance } from "./balances/balances.model";
 export class ApiService {
   private httpClient = inject(HttpClient);
   private authService = inject(AuthService);
-  private apiUrl = "http://127.0.0.1:8000/api"
+  // private apiUrl = "/api";
+  private apiUrl = "http://127.0.0.1:8000/api"; // development url for API
 
   /**
    * Creates Http Auth Headers for JWT Bearer Auth
@@ -202,6 +204,31 @@ export class ApiService {
       { headers: this.getAuthHeaders() }
     ).pipe(
       catchError(this.handleError.bind(this))
+    );
+  }
+
+  registerNewUser(registrationData: RegistrationData): Observable<RegistrationResponse> {
+    return this.httpClient.post<RegistrationResponse>(
+      `${this.apiUrl}/register`,
+      registrationData
+    ).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'Registrierung fehlgeschlagen';
+
+        if (error.status === 409) {
+          errorMessage = 'Benutzername oder E-Mail-Adresse ist bereits vergeben';
+        } else if (error.status === 422) {
+          errorMessage = error.error?.message || 'Ungültige Eingabedaten';
+        } else if (error.error?.message) {
+          errorMessage = error.error.message;
+        }
+
+        return throwError(() => ({
+          status: error.status,
+          message: errorMessage,
+          originalError: error
+        }));
+      })
     );
   }
 }

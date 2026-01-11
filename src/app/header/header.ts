@@ -14,6 +14,9 @@ export class Header implements OnInit {
   private authService = inject(AuthService);
   private userService = inject(UserService);
 
+  // Expose authentication state to template
+  isAuthenticated = this.authService.isAuthenticated;
+
   // Computed signal for greeting message
   greeting = computed(() => {
     const userInfo = this.userService.getUserInfo();
