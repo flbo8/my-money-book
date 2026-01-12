@@ -47,8 +47,9 @@ export class UserRepos implements OnInit{
     this.repoService.requestUserRepos();
   }
 
-  selectRepo(repoName: string) {
+  selectRepo(repoName: string, balanceDate: string) {
     this.repoService.selectedRepoName.set(repoName);
+    this.repoService.selectedBalanceDate.set(balanceDate);
     // No need to manually fetch - the effect in Transfers component will handle it
   }
 

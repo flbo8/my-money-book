@@ -46,8 +46,8 @@ export class ApiService {
     // Backend returned an unsuccessful response code
     switch (error.status) {
         case 401:
-        errorMessage = 'Unauthorized: Your session has expired. Please log in again.';
-        console.error('401 Unauthorized - Token may be invalid or expired');
+        // errorMessage = 'Unauthorized: Your session has expired. Please log in again.';
+        // console.error('401 Unauthorized - Token may be invalid or expired');
         // Optionally trigger logout
         this.authService.logout();
         break;

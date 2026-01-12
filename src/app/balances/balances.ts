@@ -1,7 +1,7 @@
 import { Component, inject, computed, AfterViewInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { UserRepoService } from '../user-repos/user-repos-service';
 import { Chart, registerables } from 'chart.js';
-import { DecimalPipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 
 Chart.register(...registerables);
 
@@ -12,7 +12,7 @@ interface BalanceHistory {
 
 @Component({
   selector: 'app-balances',
-  imports: [DecimalPipe],
+  imports: [DecimalPipe, DatePipe],
   templateUrl: './balances.html',
   styleUrl: './balances.css',
 })
@@ -23,6 +23,7 @@ export class Balances implements AfterViewInit, OnDestroy {
   private repoService = inject(UserRepoService);
 
   selectedRepo = this.repoService.selectedRepoName;
+  selectedBalanceDate = this.repoService.selectedBalanceDate;
   balance = this.repoService.balance;
 
   // Mocked balance history data

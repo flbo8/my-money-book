@@ -4,9 +4,15 @@
         <p class="text-gray-600">{{ transfers().length }} Umsätze</p>
         <button
             (click)="toggleForm()"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+            class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shadow-sm hover:shadow-md"
         >
-            {{ showForm() ? 'Abbruch' : '+ Neuer Umsatz' }}
+            @if (!showForm()) {
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            }
+            <span>{{ showForm() ? 'Abbruch' : 'Neuer Umsatz' }}</span>
         </button>
     </div>
 </div>
@@ -114,7 +120,7 @@
             </button>
             <button
                 type="submit"
-                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                 [disabled]="isSubmitting()"
             >
                 {{ isSubmitting() ? 'Speichert...' : 'Erstellen' }}

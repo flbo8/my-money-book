@@ -1,4 +1,3 @@
-// src/app/services/auth.service.ts
 import { DestroyRef, effect, inject, Injectable, signal, untracked } from '@angular/core';
 import { ApiService } from '../api.service';
 import { AuthService } from '../auth.service';
@@ -16,6 +15,7 @@ export class UserRepoService {
 
   // Store selected repo name as string ('Alle' or specific repo name)
   selectedRepoName = signal<string>('Alle');
+  selectedBalanceDate = signal<string>('');
   allRepos = signal<MoneyRepo[]>([]);
   transfers = signal<Transfer[]>([]);
   balance = signal<Balance>({

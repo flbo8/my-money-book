@@ -1,12 +1,5 @@
-<div class="flex justify-between items-center mb-4 pb-2 border-b-2 border-orange-200">
+<div class="mb-4 pb-2 border-b-2 border-orange-200">
     <h2 class="text-lg font-semibold text-orange-800">Konten</h2>
-    <button
-        (click)="toggleForm()"
-        class="bg-orange-600 hover:bg-orange-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
-        title="Neues Konto erstellen"
-    >
-        +
-    </button>
 </div>
 
 <!-- Modal for creating new repo -->
@@ -112,9 +105,9 @@
 </app-modal>
 
 <nav class="flex flex-col gap-2">
-    <!-- option for all repos combined -->
+    <!-- option for all money repos combined -->
     <button
-        (click)="selectRepo('Alle')"
+        (click)="selectRepo('Alle', '')"
         [class]="selRepo() === 'Alle'
             ? 'bg-orange-100 text-orange-900 border-l-4 border-l-orange-400 px-4 py-2.5 border-y border-r border-gray-200 cursor-pointer transition-all text-left font-medium'
             : 'text-gray-700 border-l-4 border-l-transparent hover:border-l-orange-200 hover:bg-gray-50 px-4 py-2.5 border-y border-r border-transparent cursor-pointer transition-all text-left font-medium'"
@@ -125,7 +118,7 @@
     <!-- Individual repo buttons -->
     @for (repo of allRepos(); track repo.id) {
     <button
-        (click)="selectRepo(repo.repoName)"
+        (click)="selectRepo(repo.repoName, repo.startBalanceDate)"
         [class]="selRepo() === repo.repoName
             ? 'bg-orange-100 text-orange-900 border-l-4 border-l-orange-400 px-4 py-2.5 border-y border-r border-gray-200 cursor-pointer transition-all text-left font-medium'
             : 'text-gray-700 border-l-4 border-l-transparent hover:border-l-orange-200 hover:bg-gray-50 px-4 py-2.5 border-y border-r border-transparent cursor-pointer transition-all text-left font-medium'"
@@ -134,3 +127,16 @@
     </button>
     }
 </nav>
+
+<!-- Add new money repo button -->
+<button
+    (click)="toggleForm()"
+    class="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white p-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
+    title="Neues Konto erstellen"
+>
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+    <span class="font-medium">Neues Konto</span>
+</button>
