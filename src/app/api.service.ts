@@ -197,6 +197,25 @@ export class ApiService {
     );
   }
 
+  updateTransfer(repoId: number, transferId: number, transferData: Partial<Transfer>): Observable<Transfer> {
+    return this.httpClient.put<Transfer>(
+      `${this.apiUrl}/money-repos/${repoId}/transfers/${transferId}`,
+      transferData,
+      { headers: this.getAuthHeaders() }
+    ).pipe(
+      catchError(this.handleError.bind(this))
+    );
+  }
+
+  deleteTransfer(repoId: number, transferId: number): Observable<void> {
+    return this.httpClient.delete<void>(
+      `${this.apiUrl}/money-repos/${repoId}/transfers/${transferId}`,
+      { headers: this.getAuthHeaders() }
+    ).pipe(
+      catchError(this.handleError.bind(this))
+    );
+  }
+
   createRepo(repoData: Partial<MoneyRepo>): Observable<MoneyRepo> {
     return this.httpClient.post<MoneyRepo>(
       `${this.apiUrl}/money-repos`,
