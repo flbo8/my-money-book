@@ -43,34 +43,34 @@ export class ApiService {
     errorMessage = `Network error: ${error.error.message}`;
     console.error('Client-side error:', error.error.message);
     } else {
-    // Backend returned an unsuccessful response code
-    switch (error.status) {
-        case 401:
-        // errorMessage = 'Unauthorized: Your session has expired. Please log in again.';
-        // console.error('401 Unauthorized - Token may be invalid or expired');
-        // Optionally trigger logout
-        this.authService.logout();
-        break;
+      // Backend returned an unsuccessful response code
+      switch (error.status) {
+          case 401:
+          // errorMessage = 'Unauthorized: Your session has expired. Please log in again.';
+          // console.error('401 Unauthorized - Token may be invalid or expired');
+          // Optionally trigger logout
+          this.authService.logout();
+          break;
 
-        case 403:
-        errorMessage = 'Forbidden: You do not have permission to access this resource.';
-        console.error('403 Forbidden - Insufficient permissions');
-        break;
+          case 403:
+          errorMessage = 'Forbidden: You do not have permission to access this resource.';
+          console.error('403 Forbidden - Insufficient permissions');
+          break;
 
-        case 404:
-        errorMessage = 'Not Found: The requested resource could not be found.';
-        console.error('404 Not Found - Resource does not exist');
-        break;
+          case 404:
+          errorMessage = 'Not Found: The requested resource could not be found.';
+          console.error('404 Not Found - Resource does not exist');
+          break;
 
-        case 500:
-        errorMessage = 'Internal Server Error: Please try again later.';
-        console.error('500 Internal Server Error - Server error occurred');
-        break;
+          case 500:
+          errorMessage = 'Internal Server Error: Please try again later.';
+          console.error('500 Internal Server Error - Server error occurred');
+          break;
 
-        default:
-        errorMessage = `Error ${error.status}: ${error.error?.message || error.statusText}`;
-        console.error(`HTTP Error ${error.status}:`, error.error);
-    }
+          default:
+          errorMessage = `Error ${error.status}: ${error.error?.message || error.statusText}`;
+          console.error(`HTTP Error ${error.status}:`, error.error);
+      }
     }
 
     // Return an observable with a user-facing error message
@@ -220,6 +220,25 @@ export class ApiService {
     return this.httpClient.post<MoneyRepo>(
       `${this.apiUrl}/money-repos`,
       repoData,
+      { headers: this.getAuthHeaders() }
+    ).pipe(
+      catchError(this.handleError.bind(this))
+    );
+  }
+
+  updateRepo(repoId: number, repoData: Partial<MoneyRepo>): Observable<MoneyRepo> {
+    return this.httpClient.put<MoneyRepo>(
+      `${this.apiUrl}/money-repos/${repoId}`,
+      repoData,
+      { headers: this.getAuthHeaders() }
+    ).pipe(
+      catchError(this.handleError.bind(this))
+    );
+  }
+
+  deleteRepo(repoId: number): Observable<void> {
+    return this.httpClient.delete<void>(
+      `${this.apiUrl}/money-repos/${repoId}`,
       { headers: this.getAuthHeaders() }
     ).pipe(
       catchError(this.handleError.bind(this))
