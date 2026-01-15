@@ -1,10 +1,10 @@
 <div class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-bold text-gray-800">Umsätze</h2>
+    <h2 class="text-2xl font-bold text-gray-800 cursor-default">Umsätze</h2>
     <div class="flex items-center gap-4">
-        <p class="text-gray-600">{{ transfers().length }} Umsätze</p>
+        <p class="text-gray-600 cursor-default">{{ transfers().length }} Umsätze</p>
         <button
             (click)="toggleForm()"
-            class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shadow-sm hover:shadow-md"
+            class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 shadow-sm hover:shadow-md cursor-pointer"
         >
             @if (!showForm()) {
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -19,7 +19,7 @@
 
 @if (showForm()) {
 <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-    <h3 class="text-xl font-semibold text-gray-800 mb-4">{{ isEditMode() ? 'Umsatz bearbeiten' : 'Neuer Umsatz' }}</h3>
+    <h3 class="text-xl font-semibold text-gray-800 mb-4 cursor-default">{{ isEditMode() ? 'Umsatz bearbeiten' : 'Neuer Umsatz' }}</h3>
 
     <form [formGroup]="transferForm" (ngSubmit)="onPostSubmitTransfer()">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -31,7 +31,7 @@
                 <select
                     id="repoId"
                     formControlName="repoId"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                     [class.border-red-500]="transferForm.get('repoId')?.invalid && transferForm.get('repoId')?.touched"
                 >
                     <option [value]="null">Bitte wählen ...</option>
@@ -52,7 +52,7 @@
                 <select
                     id="transferType"
                     formControlName="transferType"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                 >
                     <option value="income">Einkommen</option>
                     <option value="expense">Ausgabe</option>
@@ -87,7 +87,7 @@
                     type="datetime-local"
                     id="transferDate"
                     formControlName="transferDate"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                     [class.border-red-500]="transferForm.get('transferDate')?.invalid && transferForm.get('transferDate')?.touched"
                 />
             </div>
@@ -113,14 +113,14 @@
             <button
                 type="button"
                 (click)="isEditMode() ? cancelEdit() : toggleForm()"
-                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
                 [disabled]="isSubmitting()"
             >
                 Abbruch
             </button>
             <button
                 type="submit"
-                class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                class="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer"
                 [disabled]="isSubmitting()"
             >
                 {{ isSubmitting() ? 'Speichert...' : (isEditMode() ? 'Aktualisieren' : 'Erstellen') }}
@@ -132,13 +132,13 @@
 
 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
     @for (transfer of transfers(); track transfer.id) {
-    <div class="bg-white p-5 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+    <div class="bg-white p-5 rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-default">
         <div class="flex justify-between items-center mb-3">
         <span class="text-sm text-gray-500 font-medium">{{ transfer.transferDate | date: "dd.MM.y HH:mm" : "UTC"}}</span>
         <div class="flex gap-1">
             <button
                 (click)="deleteTransfer(transfer)"
-                class="text-gray-500 hover:text-red-600 p-1 rounded-lg hover:bg-red-50 transition-colors"
+                class="text-gray-500 hover:text-red-600 p-1 rounded-lg hover:bg-red-50 transition-colors cursor-pointer"
                 title="Löschen"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -150,7 +150,7 @@
             </button>
             <button
                 (click)="startEditTransfer(transfer)"
-                class="text-gray-500 hover:text-orange-500 p-1 rounded-lg hover:bg-orange-50 transition-colors"
+                class="text-gray-500 hover:text-orange-500 p-1 rounded-lg hover:bg-orange-50 transition-colors cursor-pointer"
                 title="Bearbeiten"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -163,6 +163,7 @@
         <div class="text-lg font-semibold text-gray-900 mb-3">{{ transfer.description }}</div>
         <div class="flex justify-between items-center">
         <span class="text-sm text-gray-500">{{ transfer.repoName }}</span>
+        <!-- TODO: get currency symbol from money-repo model -->
         <span
             [class.text-green-600]="transfer.transferType === 'income'"
             [class.text-red-600]="transfer.transferType === 'expense'"
@@ -176,10 +177,10 @@
 </div>
 
 @if (transfers().length === 0) {
-    <div class="text-center py-12 bg-white rounded-lg shadow-md">
-    <p class="text-lg text-gray-500">
-        No transfers found for {{ selRepo() === 'Alle' ? 'any repository' : selRepo() }}.
-    </p>
+    <div class="text-center py-12 bg-white rounded-lg shadow-md cursor-pointer">
+        <p class="text-lg text-gray-500">
+            Keine Umsätze für {{ selRepo() === 'Alle' ? 'any repository' : selRepo() }} gefunden.
+        </p>
     </div>
 }
 
@@ -190,7 +191,7 @@
     (close)="closeDeleteModal()"
 >
     @if (transferToDelete()) {
-    <div class="space-y-4">
+    <div class="space-y-4 cursor-default">
         <p class="text-gray-700 text-lg">
             Möchten Sie diesen Umsatz wirklich löschen?
         </p>
@@ -231,14 +232,14 @@
             <button
                 type="button"
                 (click)="closeDeleteModal()"
-                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
             >
                 Abbrechen
             </button>
             <button
                 type="button"
                 (click)="confirmDelete()"
-                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors cursor-pointer"
             >
                 Löschen
             </button>
